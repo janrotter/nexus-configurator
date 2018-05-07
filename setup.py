@@ -8,11 +8,11 @@ setup(
   url='https://github.com/ocadotechnology/nexus-configurator',
   author='Tuskens, stuart-warren',
   install_requires=[
-      'requests',
-      'pyyaml',
-      'jinja2',
+    'requests',
+    'pyyaml',
+    'jinja2',
   ],
-  packages=['nexus_configurator'],
-  scripts=['bin/nexus_configurator'],
+  packages=['nexus'],
+  scripts=['bin/nexus_configurator.py'],
   data_files=[('groovy', glob.glob('groovy/*.groovy'))]
 )

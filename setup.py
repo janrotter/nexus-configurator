@@ -11,8 +11,13 @@ setup(
     'requests',
     'pyyaml',
     'jinja2',
+    'boto3'
   ],
   packages=['nexus'],
-  scripts=['bin/nexus_configurator.py'],
+  entry_points={
+    'console_scripts': [
+      'nexus_configurator=nexus.nexus_configurator:main',
+    ],
+  },
   data_files=[('groovy', glob.glob('groovy/*.groovy'))]
 )

@@ -8,14 +8,13 @@ import httpretty
 from moto import mock_s3
 
 from nexus.nexus import NexusUnauthorised
-sys.path.insert(0, 'bin')
-import nexus_configurator # noqa: E402
+import nexus.nexus_configurator as nexus_configurator
 
 SAMPLE_CONFIG = [{'setup_anonymous_access': [{'anonymous_access': True}]}]
 SAMPLE_CONFIG_PATH = 'tests/test_data/example_config.yaml'
 
 
-@mock.patch('nexus_configurator.Nexus')
+@mock.patch('nexus.nexus_configurator.Nexus')
 def test_nexus_sets_up_anonymous_access(nexus):
     anon_access_script = 'groovy/setup_anonymous_access.groovy'
     testargs = ["nexus_configurator",
@@ -29,7 +28,7 @@ def test_nexus_sets_up_anonymous_access(nexus):
                                        anonymous_access=True)
 
 
-@mock.patch('nexus_configurator.Nexus')
+@mock.patch('nexus.nexus_configurator.Nexus')
 def test_nexus_auth_tries_each_password_until_successful(nexus):
     testargs = ["nexus_configurator",
                 "--config",

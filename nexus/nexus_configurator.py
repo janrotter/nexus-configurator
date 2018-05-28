@@ -7,6 +7,7 @@ import os
 import os.path
 import sys
 import urllib
+import traceback
 
 import boto3
 import requests
@@ -129,10 +130,13 @@ def main():
     args = parse_args()
     print("Starting")
     passwords = get_passwords(args.password, args.credential_file)
+    print("Creating nexus client...")
     nx = nexus_client(host=args.host, password_list=passwords)
     if not nx:
         fatal("No valid Nexus client")
+    print("Uploading scripts...")
     upload_groovy_scripts_to_nexus(args.groovy_dir, nx)
+    print("Done.")
     config = read_config_file(args.config)
     for config_step in config:
         for script_type, resources in config_step.items():
@@ -167,6 +171,7 @@ def nexus_client(host, user=ADMIN_USER, password_list=None):
 
     if None returned, all of the provided credentials were invalid.
     """
+
     password_list = password_list or []
     for password in password_list:
         try:
@@ -175,7 +180,8 @@ def nexus_client(host, user=ADMIN_USER, password_list=None):
             print("Credential attempted and was rejected")
         except NexusConnectionError:
             print("Connection attempted to {} but ".format(host)
-                  + "failed multiple times")
+                  + "failed multiple times.")
+            traceback.print_exc()
 
 
 def fatal(msg):

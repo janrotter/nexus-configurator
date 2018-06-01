@@ -1,4 +1,5 @@
 import base64
+from pkg_resources import resource_filename
 import sys
 from unittest import mock
 from unittest.mock import patch
@@ -7,16 +8,17 @@ import boto3
 import httpretty
 from moto import mock_s3
 
-from nexus.nexus import NexusUnauthorised
-import nexus.nexus_configurator as nexus_configurator
+from nexus_configurator.nexus import NexusUnauthorised
+import nexus_configurator.nexus_configurator as nexus_configurator
 
 SAMPLE_CONFIG = [{'setup_anonymous_access': [{'anonymous_access': True}]}]
 SAMPLE_CONFIG_PATH = 'tests/test_data/example_config.yaml'
+GROOVY_SCRIPTS_DIR = resource_filename("nexus_configurator", "groovy")
 
 
-@mock.patch('nexus.nexus_configurator.Nexus')
+@mock.patch('nexus_configurator.nexus_configurator.Nexus')
 def test_nexus_sets_up_anonymous_access(nexus):
-    anon_access_script = 'groovy/setup_anonymous_access.groovy'
+    anon_access_script = GROOVY_SCRIPTS_DIR + '/setup_anonymous_access.groovy'
     testargs = ["nexus_configurator",
                 "--config",
                 SAMPLE_CONFIG_PATH]
@@ -28,7 +30,7 @@ def test_nexus_sets_up_anonymous_access(nexus):
                                        anonymous_access=True)
 
 
-@mock.patch('nexus.nexus_configurator.Nexus')
+@mock.patch('nexus_configurator.nexus_configurator.Nexus')
 def test_nexus_auth_tries_each_password_until_successful(nexus):
     testargs = ["nexus_configurator",
                 "--config",

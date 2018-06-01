@@ -12,9 +12,12 @@ import traceback
 import boto3
 import requests
 import yaml
-from nexus.nexus import Nexus, NexusUnauthorised, NexusConnectionError
+from nexus_configurator.nexus import Nexus, NexusUnauthorised
+from nexus_configurator.nexus import NexusConnectionError
+from pkg_resources import resource_filename
 
 ADMIN_USER = "admin"
+GROOVY_SCRIPTS_DIR = resource_filename("nexus_configurator", "groovy")
 
 
 class EnvDefault(argparse.Action):
@@ -59,7 +62,7 @@ def parse_args():
                         required=False)
     parser.add_argument("-g", "--groovy_dir",
                         help="directory containing groovy scripts to upload",
-                        default="groovy",
+                        default=GROOVY_SCRIPTS_DIR,
                         action=EnvDefault,
                         envvar="NEXUS_GROOVY_DIR")
     parser.add_argument("--config",

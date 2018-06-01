@@ -1,10 +1,10 @@
 all: test
 .PHONY: test all lint
 
-groovy:
+nexus_configurator/groovy:
 	./build.sh
 
-test: groovy
+test: nexus_configurator/groovy
 	pytest -vv
 
 lint:
